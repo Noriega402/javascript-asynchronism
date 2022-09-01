@@ -1,26 +1,55 @@
-import fetch from 'node-fetch';
-const URL = 'https://api.escuelajs.co/api/v1'
+import fetch from "node-fetch";
+const URL = 'https://api.escuelajs.co/api/v1';
 
-function fetchData(URL){
-    return fetch(URL);
-}
+// ADD DATA
+const data = {
+    "title": "New Product Test",
+    "price": 8010,
+    "description": "A description for Daniel Noriega",
+    "categoryId": 1,
+    "images": ["https://placeimg.com/640/480/any"]
+};
 
-fetchData(`${URL}/products`)
-    .then(response => response.json())//convirtiendo respuesta a json
-    .then(productos => {
-        console.log(productos[0])//mostrando detalle de producto en formato json
-        return fetchData(`${URL}/products/${productos[0].id}`);// retornar el id del producto
-    })
-    .then(response => response.json())
-    .then(product => {
-        console.log(product.title)//mostrar titulo con id retornado anteriormente
-        console.log(product.price)// mostrar precio con id retornado anteriormente
-        console.log(product.images[0])//mostrar img con id retornado anteriormente
-        return fetchData(`${URL}/categories/${product.category.id}`);// retornar el id de la categoria del producto seleccionado
-    })
-    .then(response => response.json())
-    .then(categoria => {
-        console.log(categoria.name);
-    })
-    .catch(error => console.log(error))// Error si no logra resolver la promesa
-    .finally(() => console.log('PETICION FINALIZADA'))//mensaje o ejecucion de algo cuando termine todo, aun asi sea un error o una promesa resuelta
+function postData(URL,data){
+    const response = fetch(URL, {
+        method: 'POST', // metodo para obtener en el fetch
+        mode: 'cors', //investigar
+        credentials: 'same-origin', //investigar
+        headers:{
+            'Content-Type': 'application/json' //cabeceras que se envian
+        },
+        body: JSON.stringify(data)//transforma el JSON a un texto
+    });
+    return response;
+};
+
+postData(`${URL}/products/`,data)
+.then(response => response.json()) //transformar data en json
+.then(data => console.log(data)) //mostrar data en consola
+.catch(error => console.log(error)) //en caso de error
+
+
+// UPDATE DATA
+const update = {
+    "title": "Change title Daniel",
+    "price": 1750
+};
+const idUpdate = 218;
+
+function updateData(URL,data){
+    const response = fetch(URL, {
+        method: 'PUT',
+        mode:'cors',
+        credentials: 'same-origin',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(update)
+    });
+    return response;
+};
+
+updateData(`${URL}/products/${idUpdate}`,update)
+.then(res => res.json())
+.then(data => console.log(data))
+.catch(error => console.log(error))
