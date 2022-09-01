@@ -53,3 +53,33 @@ updateData(`${URL}/products/${idUpdate}`,update)
 .then(res => res.json())
 .then(data => console.log(data))
 .catch(error => console.log(error))
+
+
+// GET SINGLE DATA
+const getSingle = 218;
+
+function getData(URL){
+    const response = fetch(URL,{
+        method:'GET',
+    })
+    return response;
+}
+
+getData(`${URL}/products/${getSingle}`) // se enecesita el Id para editar el producto de la API
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.log(error))
+
+//DELETE DATA
+const borrar = 218;
+
+function deleteData(URL){
+    const response = fetch(URL,{
+        method:'DELETE',
+    })
+    return response;
+}
+
+deleteData(`${URL}/products/${borrar}`) //se necesita el ID para eliminar el producto de la API
+.then(() => console.log('Producto eliminado'))
+.catch(error => console.log(error))
